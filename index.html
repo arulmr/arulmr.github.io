@@ -1,1 +1,64 @@
-Welcome to Arulmurugan's Bitbucket page!
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="shortcut icon" href="./img/favicon.gif" />
+		<title>Arul's Homepage</title>
+		<style type="text/css">
+			a
+			{
+				height:100px;
+				width:500px;
+			}
+			#update_div
+			{
+				font: bold 20px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+				color: #0E8BA7;
+				letter-spacing: 2px;
+				text-transform: uppercase;
+				text-align: left;
+				padding: 6px 6px 6px 12px;
+				width: 500px;
+				border: 3px solid #6D929B;
+				border-radius: 25px;
+				min-height: 30px;
+			}
+			.time
+			{
+				width: 25px;
+			}
+			#title_div
+			{
+				text-shadow: 0px 1px 1px #4d4d4d;
+				color: #222;
+				font: 65px 'LeagueGothicRegular';
+			}
+		</style>
+		<script type="text/javascript" src="./js/jquery-1.8.3.js"></script>
+		<script type="text/javascript" src="./js/jquery.minutes.percent.js"></script>
+		<script type="text/javascript" >
+			$(document).ready(function(){
+				$('#update_div').html('<p>'+Date()+'</p>');
+				setInterval(function() {
+								$('#update_div').html('<p>'+Date()+'</p>');
+							}, 1000);
+				$('#minutes').min_per();
+			});
+		</script>
+	</head>
+	<body>
+		<div id="title_div" align="center">Welcome to arulmr.info</div>
+		<div class='widget-content'>
+			<a href="http://stackexchange.com/users/1103144/arulmr">
+				<img src="http://stackexchange.com/users/flair/1103144.png?theme=dark" width="208" height="58" title="Arulmurugan's profile on Stack Exchange, a network of free, community-driven Q&amp;A sites" />
+			</a>
+		</div><br /><br /><br />
+		<div id="update_div"></div><br /><br />
+		<a href='./pages/textarea_counters.html'>Textarea Counters</a><br /><br />
+		<a href='./pages/cut_copy_disable.html'>Cut Copy Disabled</a><br /><br />
+		<a href='./pages/show_hide_attr.html'>Show/Hide, Attribute change</a><br /><br />
+		<a href='./pages/timers.html'>Timers</a><br /><br />
+		<input id="minutes" class="time" type="text" /> Minutes<br /><br />
+		<div id="percent"></div><br /><br />
+	</body>
+</html>

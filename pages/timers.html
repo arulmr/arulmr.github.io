@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="../img/favicon.gif" />
+<title>jQuery Timers</title>
+<style type="text/css">
+	#bgm
+	{
+		background:url("./img/norway.jpg");
+		background-size:80px 60px;
+		background-repeat:no-repeat;
+		padding-top:40px;
+	}
+	#update_div, #timer, #down_timer
+	{
+		font: bold 20px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+		color: #0E8BA7;
+		letter-spacing: 2px;
+		text-transform: uppercase;
+		text-align: left;
+		padding: 6px 6px 6px 12px;
+		width: 500px;
+		border: 3px solid #6D929B;
+		border-radius: 25px;
+		min-height: 30px;
+	}
+	#timer, #down_timer
+	{
+		text-transform: none;
+	}
+	.time
+	{
+		width: 25px;
+	}
+</style>
+<script type="text/javascript" src="../js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="../js/jquery.checkbox.disable.js"></script>
+<script type="text/javascript" src="../js/jquery.numeric.js"></script>
+<script type="text/javascript" src="../js/jquery.limit.js"></script>
+<script type="text/javascript" >
+	$(document).ready(function(){
+
+		//Clock code
+		$('#update_div').html('<p>'+Date()+'</p>');
+		setInterval(function() {
+						$('#update_div').html('<p>'+Date()+'</p>');
+					}, 1000);
+
+		//Timer code
+		var timer_fn, seconds = minutes = hours = 0;
+		$('#timer').html('<p>'+hours+ ' Hours ' +minutes+ ' Minutes '+seconds+' Seconds</p>');
+		$('#switch').val('Start Timer');
+
+		$('#switch').click(function(){
+			var value = $(this).val();
+			if (value == 'Start Timer'){
+				timer_fn = setInterval(function(){
+					seconds += 1;
+					if (seconds > 59) {
+						seconds = 0;
+						minutes += 1;
+					}
+					if (minutes > 59) {
+						minutes = 0;
+						hours += 1;
+					}
+					$('#timer').html('<p>'+hours+ ' Hours ' +minutes+ ' Minutes '+seconds+' Seconds</p>');
+				}, 1000);
+				$(this).val('Stop Timer');
+			} else {
+				clearInterval(timer_fn);
+				$(this).val('Start Timer');
+			}
+		});
+
+		//Countdown Timer
+		$('#down_timer').html('<p> 0 Hours 0 Minutes 0 Seconds</p>');
+		$('#hours, #minutes, #seconds').numeric();
+		$('#hours, #minutes, #seconds').limit({
+			limit: 2,
+		});
+		$('#hours, #minutes, #seconds').keyup(function(){
+			var cur_id = this.id
+			var cur_val = $(this).val();
+			if (cur_id == 'hours') {
+				if (cur_val > 24) {
+					alert('Hours cannot be more than 24')
+					$(this).val('');
+				}
+			}
+			if (cur_id == 'minutes') {
+				if (cur_val > 59) {
+					alert('Minutes cannot be more than 59')
+					$(this).val('');
+				}
+			}
+			if (cur_id == 'seconds') {
+				if (cur_val > 59) {
+					alert('Seconds cannot be more than 59')
+					$(this).val('');
+				}
+			}
+		});
+		$('#hours, #minutes, #seconds').val(0);
+		$('#start_count').click(function(){
+			var count_fn, hours = $('#hours').val();
+			var minutes = $('#minutes').val();
+			var seconds = $('#seconds').val();
+			if (seconds == 0 && minutes == 0 && hours == 0) {
+				alert('Countdown cannot be started with Zero values');
+				return false;
+			}
+			$('#hours, #minutes, #seconds, #start_count').attr('disabled', true);
+			count_fn = setInterval(function(){
+				if (seconds == 0 && minutes != 0 && hours != 0) {
+					seconds = 59;
+					minutes -= 1;
+				} else if (seconds == 0 && minutes == 0 && hours != 0) {
+					seconds = 59;
+					minutes = 59;
+					hours -= 1;
+				} else if (seconds == 0 && minutes != 0 && hours == 0) {
+					seconds = 59;
+					minutes -= 1;
+				} else if (seconds == 0 && minutes == 0 && hours == 0) {
+					clearInterval(count_fn);
+					alert('Countdown completed')
+					$('#hours, #minutes, #seconds').val(0);
+					$('#hours, #minutes, #seconds, #start_count').attr('disabled', false);
+				} if (seconds != 0 || minutes != 0 || hours != 0) {
+					seconds -= 1;
+				}
+				$('#down_timer').html('<p>'+hours+ ' Hours ' +minutes+ ' Minutes '+seconds+' Seconds</p>');
+			}, 1000);
+		});
+		
+	});
+</script>
+</head>
+<body>
+	<div class="faq">
+		<div id="update_div"></div><br /><br /><br />
+		<div id="timer"></div><br />
+		<input id="switch" type="button" /><br /><br /><br />
+		<div id="down_timer"></div><br />
+		<input id="hours" class="time" type="text" /> Hours 
+		<input id="minutes" class="time" type="text" /> Minutes 
+		<input id="seconds" class="time" type="text" /> Seconds
+		<input id="start_count" type="button" value="Start Countdown" /><br /><br /><br />
+	</div>
+</body>
+</html>
